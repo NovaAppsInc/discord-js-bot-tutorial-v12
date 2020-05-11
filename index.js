@@ -4,7 +4,6 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 const token = "Obnoxiously Long Token Goes Here";
 const prefix = "your prefix goes here"
-const fs = require('fs').promises
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 bot.on('ready', () => {
@@ -20,17 +19,13 @@ bot.on("message", async message => {
 
     let resultRED = Math.floor((Math.random() * RED.length));
 
-    let ime = ["https://i.imgur.com/CE0L7YJ.jpg", "https://i.imgur.com/OEkJ3Pw.jpg", "https://i.imgur.com/OzPXycV.jpg"];
-
-    let resime = Math.floor((Math.random() * ime.length));
-
     if(message.author.bot) {
         return; //this keep the bot from read bot messages
     }
-    else if (!message.channel.nsfw === true) { // check if channel the message was sent in is NOT NSFW
-        message.channel.send('This is not an **NSFW** channel dummy')
-        return;//this is an to tell if the channel is nsfw, for nsfw bots you don't need this if your not wanting the bot to restrict to certain types of channels
-    };
+    
+    if(!message.guild){ //if the command is not sent in a guild(server) but sent in dm's
+        message.channel.send("You need to be in guild!"); return //this return is to keep it from running anything else just to be on the safe side!
+    }   //^^^then it sends a message //^^^^you can put your own custom message
     let args = message.content.trim().split(" "),
     cmd = message.toString().split(' ');
     if (cmd.toString().split(prefix)[0] !== '') return;
@@ -38,12 +33,15 @@ bot.on("message", async message => {
     let command = cmd[0].split(new RegExp(prefix, ''));
     switch(cmd[0].replace(prefix, '')){
         //basic commands
-        case 'ching'://case is easier to use than a lot of if commands
-            message.channel.send('chong')
+        case 'yo'://case is easier to use than a lot of if commands
+            message.channel.send('yo he has the yankee with no brim')
         break;//ends command
         //basic random embed with images
         case 'random':
             if(args[1] === 'image'){//check if the message has the word images then carries out process
+                let ime = ["https://i.imgur.com/CE0L7YJ.jpg", "https://i.imgur.com/OEkJ3Pw.jpg", "https://i.imgur.com/OzPXycV.jpg"];
+
+                let resime = Math.floor((Math.random() * ime.length));
                 const ThisEmbed = new Discord.MessageEmbed()//ThisEmbed is the name of the Embed your using. You can change the name!
                     .setTitle("I don't know my name:thinking:")
                     .setDescription("Some describe me please!")
@@ -60,9 +58,11 @@ bot.on("message", async message => {
             //first type this in terminal npm i xmlhttprequest
         case 'meme':
         const rmimage = new XMLHttpRequest();
-            rmimage.open("GET", `https://www.reddit.com/r/memes/top.json`, false);//this is the url it will extract a random images from you can use any other site just make sure it has an API
-            rmimage.send(null);                                                  //note the top.json is the json reddit has showing the top reddit post of the subreddit
-            postm = JSON.parse(rmimage.responseText)
+            rmimage.open("GET", `https://www.reddit.com/r/memes/top.json?count=600`, false);
+                                //^^^^^^this is the url it will extract a random images from you can use any other site just make sure it has an API
+                               //the ?count=600 this is to make sure it doesn't repeat a post //note the top.json is the json reddit has showing the top reddit post of the subreddit            
+            rmimage.send(null);
+            postm = JSON.parse(rmimage.responseText)//this will parse the link and .json specified from rmimage.open as responseText
             let resultm = Math.floor((Math.random() * postm.data.children.length));//resultm the name of the randomizer of images
             const MEmbed = new Discord.MessageEmbed()
                 .setTitle("I'm a good title!")
