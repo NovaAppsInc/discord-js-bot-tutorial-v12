@@ -4,4 +4,4 @@
 
 # if you don't have Node.js and/or discord.js installed then intall them, go to https://nodejs.org/en/ to install Node.js then, in the folder of your bot and open terminal for it and type npm i discord.js
 
-# if it show's that discord.js is installed but node_modules doesn't show up and package-lock.js doesn't show up type npm init -y # then rerun npm i discord.js
+# if it show's that discord.js is installed but node_modules doesn't show up and package-lock.js doesn't show up type npm init -y                                                   then rerun npm i discord.js
